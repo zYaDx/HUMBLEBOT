@@ -35,7 +35,7 @@ client.on('ready', () => {
     console.log(`Users! [ " ${client.users.size} " ]`);
     console.log('')
     console.log('╚[════════════════════════════════════]╝')
-          client.user.setActivity("By:ZyTon#5555",{type: 'STREAMING'});   
+          client.user.setActivity("Flix Giveaway",{type: 'STREAMING'});   
 });
 
 client.on('ready', () => {
@@ -45,7 +45,7 @@ client.on('ready', () => {
     console.log(`on  ${client.guilds.size} Servers `);
     console.log(`~~~~~~~~~~~~~~~~~~~~~~~~`);
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setGame(`-!help | By: zYx#1604`,"http://twitch.tv/zyod4")
+    client.user.setGame(`-Flix Giveaway`,"http://flix-host.com")
     client.user.setStatus("dnd")
  });
 
