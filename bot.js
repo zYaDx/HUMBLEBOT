@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 var prefix = "#";
 client.on('message', message => {
-    if (message.content == "#سرعه") {
+    if (message.content == "#سرعddصبسه") {
         var x = ["DreamKing",
 "DeathGames",
 "زيرو كنج",
@@ -106,7 +106,7 @@ client.on('message', message => {
 })
 
 client.on('message', puz => {
-    if (puz.content == "#لغز") {
+    if (puz.content == "#لdst3weبسغز") {
         var x = ["ما هي حاسة الشم عند الثعبان ؟",
 "ما هو الشي الذي يكسو الناس و هو عار بدون ملابس ؟",
 "ما هو الشي الذي لا يجري و لا يمشي ؟",
@@ -157,7 +157,7 @@ client.on('message', puz => {
 })
 
 client.on('message', fkk => {
-    if (fkk.content == "#فكك") {
+    if (fkk.content == "#فشصبسAwfsكك") {
         var x = ["المتاح للجميع لا يتاح لي",
 "خعاخع",
 "فيلا",
@@ -255,14 +255,14 @@ hours = 12;
  
  
     if(!message.guild.member(message.author).hasPermission('MANAGE_GUILD')) return message.channel.send("You dont have MANAGE_GUILD Permission!");
-    message.channel.send("please send the room name..").then(msg => {
+    message.channel.send("!يرجى إدخال أسم الروم").then(msg => {
       message.channel.awaitMessages(filter, {
         max: 1,
         time: 20000,
         errors: ['time']
       }).then(collected => {
         let room = message.guild.channels.find('name' , collected.first().content);
-        if(!room) return message.channel.send("couldnt find the room!");
+        if(!room) return message.channel.send("!لا يوجد روم بهذا الأسم");
         room = collected.first().content;
         collected.first().delete();
         msg.edit("Please send the time..").then(msg => {
@@ -274,7 +274,7 @@ hours = 12;
             if(!collected.first().content.match(/[1-60][s,m,h,d,w]/g)) return message.channel.send("Wrong Time format EXample: \n1s / 1m /1h / 1d/ 1w");
             duration = collected.first().content
             collected.first().delete();
-            msg.edit("please now send what do you want as a gift?").then(msg => {
+            msg.edit("!يرجى كتابة اسم القيف اواي").then(msg => {
               message.channel.awaitMessages(filter, {
                 max: 1,
                 time: 20000,
@@ -299,7 +299,7 @@ hours = 12;
                        let endEmbed = new Discord.RichEmbed()
                        .setColor("RED")
                        .setTitle(title)
-                       .setDescription(`Winners : no enough number of reaction so there is no winner`)
+                       .setDescription(`Winners : لا يــوجد عدد كـافي من المشـاركين لـذلك لا يــوجد فائـزين`)
                        .setFooter("Ended at :")
                        .setTimestamp()
                      m.edit('** 🎉 GIVEAWAY ENDED 🎉**' , {embed: endEmbed});
@@ -321,7 +321,7 @@ hours = 12;
                      
             });
                 } catch(e) {
-                message.channel.send(`:heavy_multiplication_x:| **i Don't Have Prem**`);
+                message.channel.send(`:heavy_multiplication_x:| **لآ امتلك صلاحية**`);
                   console.log(e);
                 }
               });
