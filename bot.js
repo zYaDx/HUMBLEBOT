@@ -357,7 +357,41 @@ client.on("message", message => {
                 })
             }).catch(err => message.channel.send(`I can't find this invite.`))
     }
-})
+});
+
+
+
+const qs = require('querystring');
+const fetch = require('node-fetch');
+client.on("message", message => {
+if(message.author.bot || message.channel.type === 'dm') return;
+let alias = message.content.split(" ")[0].substring(prefix.length);
+let args = message.content.split(" ");
+if(alias === 'film') {
+if(!args[1]) return;
+let query = qs.stringify({ s: args.slice(1).join(" ") });
+let queryString = `http://www.omdbapi.com/?apikey=7163cd9d&type=movie&${query}`;
+fetch(queryString)
+.then(res => res.json())
+.then(async res => {
+let search = res.Search;
+let director = res.Director
+request(`https://www.imdb.com/title/${search[0].imdbID}`, async function (error, response, body) {
+let story = body.split("<div class=\"summary_text\">")[1].toString().split("</div>")[0];
+let o = new Discord.RichEmbed();
+await o.setColor("#090303");
+await o.setThumbnail(search[0].Poster);
+await o.setTitle(`**» ${search[0].Title}**`);
+await o.setURL(`https://www.imdb.com/title/${search[0].imdbID}`);
+await o.addField("» Release", search[0].Year, true);
+await o.addField("» Story", story, true);
+await message.channel.send(o);
+});
+}).catch(e => {
+if(e) return message.channel.send(`**:x: | Couldn't get any results**`);
+});
+}
+});
 
 
 
