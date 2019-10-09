@@ -1,10 +1,7 @@
 const Discord = require('discord.js');
 const Util = require('discord.js');
+const prefix = `--';
 
-const PREFIX = `--';
-
-const queue = new Map();
-const client = new Discord.Client({disableEveryone: true}); 
 
 client.on('ready', () => {
     console.log('╔[════════════════════════════════════]╗'); 
