@@ -339,38 +339,63 @@ hours = 12;
 
 
 
-const qs = require('querystring');
-const fetch = require('node-fetch');
-client.on("message", message => {
-if(message.author.bot || message.channel.type === 'dm') return;
-let alias = message.content.split(" ")[0].substring(prefix.length);
-let args = message.content.split(" ");
-if(alias === 'film') {
-if(!args[1]) return;
-let query = qs.stringify({ s: args.slice(1).join(" ") });
-let queryString = `http://www.omdbapi.com/?apikey=7163cd9d&type=movie&${query}`;
-fetch(queryString)
-.then(res => res.json())
-.then(async res => {
-let search = res.Search;
-let director = res.Director
-request(`https://www.imdb.com/title/${search[0].imdbID}`, async function (error, response, body) {
-let story = body.split("<div class=\"summary_text\">")[1].toString().split("</div>")[0];
-let o = new Discord.RichEmbed();
-await o.setColor("#090303");
-await o.setThumbnail(search[0].Poster);
-await o.setTitle(`**» ${search[0].Title}**`);
-await o.setURL(`https://www.imdb.com/title/${search[0].imdbID}`);
-await o.addField("» Release", search[0].Year, true);
-await o.addField("» Story", story, true);
-await message.channel.send(o);
-});
-}).catch(e => {
-if(e) return message.channel.send(`**:x: | Couldn't get any results**`);
-});
-}
-});
-
+var reportcool = new Set();
+client.on('message', message => {
+    if(message.content.startsWith(prefix+"watchdogreport") || message.content.startsWith(prefix+"wdr") || message.content.startsWith(prefix+"report")||message.content.startsWith(prefix+"wdreport")){
+       message.delete()
+        if(message.author.bot) return botMSG();
+        if(message.channel.type == "dm") return DMMSG();
+ 
+        if(reportcool.has(message.author)) return message.channel.send("You can report every 3min!")
+        var usedcmd = message.content.split(" ")[0]
+        var mention = message.mentions.users.first();
+        var proof = message.content.split(" ")[2];
+ 
+ 
+        var channel = message.guild.channels.find('name', 'reports');
+ 
+        if(!channel) return message.channel.send("I cant find reports channel please contact a staff member!")
+ 
+ 
+        var reason = message.content.split(" ").slice(3).join(" ");
+ 
+ 
+        if(!mention) return message.reply("please mention the user")
+        if(mention.id == message.author.id) return message.reply("You can not report your self") 
+        if(mention.bot) return message.reply('You cant report bots!')
+        if(message.guild.member(mention).hasPermission("MANAGE_ROLES")) return message.reply('You are not able to report '+mention.username+'.');
+ 
+ 
+        if(!proof) return message.channel.send("Please give us proof example picture link.")
+ 
+ 
+        if(!reason) return message.channel.send(`You need to write the reason.. (Usage: ${usedcmd} <mention user> <proof> <reason>)`)
+ 
+ 
+        var embed1 = new Discord.RichEmbed()
+        .setTitle(`New Report by ${message.author.username}`)
+        .setThumbnail(message.author.avatarURL)
+        .setColor('RED')
+        .addField('reporter: ', `${message.author.username}#${message.author.discriminator} (ID: ${message.author.id})`, true)
+        .addField('Reported: ', `${mention.username}#${mention.discriminator} (ID: ${mention.id})`, false)
+        .addField('Time: ', `${moment(message.createdAt).format('DD/MM/YYYY h:mm a')}`, true)
+        .addField('InChannel: ', `#${message.channel.name}`, false)
+        .addField('Proof: ', `${proof}`, true)
+        .addField('Reason: ', reason, false)
+        .setFooter(message.guild.name, message.guild.iconURL)
+ 
+        channel.send(embed1)
+        message.channel.send("You report was sent. Thanks for your report!")
+        reportcool.add(message.author)
+        setTimeout(async function(){
+            reportcool.delete(message.author)
+ 
+        }, 1000 * 192)
+ 
+ 
+ 
+    }
+})
 
 
 
