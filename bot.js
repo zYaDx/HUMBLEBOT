@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const Util = require('discord.js');
-const Canvas = require("canvas")
 
 const PREFIX = '!g';
 
@@ -21,7 +20,7 @@ client.on('ready', () => {
     console.log(`Users! [ " ${client.users.size} " ]`);
     console.log('')
     console.log('╚[════════════════════════════════════]╝')
-          client.user.setActivity("Flix Giveaway",{type: 'STREAMING'});   
+          client.user.setActivity("Flix Giveaway",{type: 'Online'});   
 });
 
 client.on('ready', () => {
@@ -31,8 +30,8 @@ client.on('ready', () => {
     console.log(`on  ${client.guilds.size} Servers `);
     console.log(`~~~~~~~~~~~~~~~~~~~~~~~~`);
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setGame(`-Flix Giveaway`,"http://flix-host.com")
-    client.user.setStatus("dnd")
+    client.user.setGame(``,"")
+    client.user.setStatus("online")
  });
 
 
