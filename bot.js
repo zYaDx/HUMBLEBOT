@@ -337,28 +337,6 @@ hours = 12;
 
 
 
-const fetch = require("node-fetch")
-client.on("message", message => {
-    if (message.content.startsWith(prefix + "inviteinfo")) {
-        var args = message.content.split(" ").slice(1)
-        if (!args) return;
-        console.log(`https://discordapp.com/api/v6/invites/${args[0]}?with_counts=true`)
-        fetch(`https://discordapp.com/api/v6/invites/${args[0]}?with_counts=true`)
-            .then(res => res.json())
-            .then(body => {
-                var embed = new Discord.RichEmbed()
-                    .setTitle("Invite info")
-                    .addField("Server", `**Server Name :** ${body.guild.name}\n**Server ID :** ${body.guild.id}\n**Members count :** ${body.approximate_member_count}\n**Online members count :** ${body.approximate_presence_count}`)
-                    .addField("Channel", `**Channel name :** ${body.channel.name}\n**Channel ID :** ${body.channel.id}`)
-                    .addField("Inviter", `**Name :** ${body.inviter.username}#${body.inviter.discriminator}`)
-                    .setThumbnail(`https://cdn.discordapp.com/icons/${body.guild.id}/${body.guild.icon}.png`)
-                message.channel.send({
-                    embed: embed
-                })
-            }).catch(err => message.channel.send(`I can't find this invite.`))
-    }
-});
-
 
 
 const qs = require('querystring');
