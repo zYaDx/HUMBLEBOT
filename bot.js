@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const Util = require('discord.js');
 
-const PREFIX = '!';
+const PREFIX = `--';
 
 const queue = new Map();
 const client = new Discord.Client({disableEveryone: true}); 
