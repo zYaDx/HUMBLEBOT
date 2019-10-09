@@ -115,7 +115,7 @@ hours = 12;
                        let endEmbed = new Discord.RichEmbed()
                        .setColor("RED")
                        .setTitle(title)
-                       .setDescription(`Winners : no enough number of reaction so there is no winner`)
+                       .setDescription(`Winners : لا يوجد عدد كافي من المشاركين, فـلذلك لا يوجد فائزين`)
                        .setFooter("Ended at :")
                        .setTimestamp()
                      m.edit('** 🎉 GIVEAWAY ENDED 🎉**' , {embed: endEmbed});
@@ -137,7 +137,7 @@ hours = 12;
                      
             });
                 } catch(e) {
-                message.channel.send(`:heavy_multiplication_x:| **i Don't Have Prem**`);
+                message.channel.send(`:heavy_multiplication_x:| **لا امتلك صلاحية**`);
                   console.log(e);
                 }
               });
