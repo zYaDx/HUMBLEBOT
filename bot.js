@@ -338,64 +338,62 @@ hours = 12;
 
 
 
-
-var reportcool = new Set();
-client.on('message', message => {
-    if(message.content.startsWith(prefix+"watchdogreport") || message.content.startsWith(prefix+"wdr") || message.content.startsWith(prefix+"report")||message.content.startsWith(prefix+"wdreport")){
-       message.delete()
-        if(message.author.bot) return botMSG();
-        if(message.channel.type == "dm") return DMMSG();
+var stopReacord = true;
+var reactionRoles = [];
+var definedReactionRole = null;
  
-        if(reportcool.has(message.author)) return message.channel.send("You can report every 3min!")
-        var usedcmd = message.content.split(" ")[0]
-        var mention = message.mentions.users.first();
-        var proof = message.content.split(" ")[2];
- 
- 
-        var channel = message.guild.channels.find('name', 'reports');
- 
-        if(!channel) return message.channel.send("I cant find reports channel please contact a staff member!")
- 
- 
-        var reason = message.content.split(" ").slice(3).join(" ");
- 
- 
-        if(!mention) return message.reply("please mention the user")
-        if(mention.id == message.author.id) return message.reply("You can not report your self") 
-        if(mention.bot) return message.reply('You cant report bots!')
-        if(message.guild.member(mention).hasPermission("MANAGE_ROLES")) return message.reply('You are not able to report '+mention.username+'.');
- 
- 
-        if(!proof) return message.channel.send("Please give us proof example picture link.")
- 
- 
-        if(!reason) return message.channel.send(`You need to write the reason.. (Usage: ${usedcmd} <mention user> <proof> <reason>)`)
- 
- 
-        var embed1 = new Discord.RichEmbed()
-        .setTitle(`New Report by ${message.author.username}`)
-        .setThumbnail(message.author.avatarURL)
-        .setColor('RED')
-        .addField('reporter: ', `${message.author.username}#${message.author.discriminator} (ID: ${message.author.id})`, true)
-        .addField('Reported: ', `${mention.username}#${mention.discriminator} (ID: ${mention.id})`, false)
-        .addField('Time: ', `${moment(message.createdAt).format('DD/MM/YYYY h:mm a')}`, true)
-        .addField('InChannel: ', `#${message.channel.name}`, false)
-        .addField('Proof: ', `${proof}`, true)
-        .addField('Reason: ', reason, false)
-        .setFooter(message.guild.name, message.guild.iconURL)
- 
-        channel.send(embed1)
-        message.channel.send("You report was sent. Thanks for your report!")
-        reportcool.add(message.author)
-        setTimeout(async function(){
-            reportcool.delete(message.author)
- 
-        }, 1000 * 192)
- 
- 
- 
+client.on("message", async message => {
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const command = args.shift().toLowerCase();
+    if(message.author.bot) return;
+    if(message.content.indexOf(prefix) !== 0) return;
+    if (command == "autoc") {
+      if(!message.channel.guild) return message.reply(`**this ~~command~~ __for servers only__**`);
+      if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("sorry you can't do this");
+      if(!args[0] || args[1]) return message.channel.send(`\`\`\`${prefix}autoC <role-name>\`\`\``);
+      var role = message.guild.roles.find( role => { return role.name == args[0] });
+      if(!role) return message.channel.send(`no role with name ${definedRoleName} found, make sure you entered correct name`);
+      if(definedReactionRole != null  || !stopReacord) return message.channel.send("another reaction role request is running");
+      message.channel.send(`now go and add reaction in the message you want for role ${role.name}`);
+      definedReactionRole = role;
+      stopReacord = false;
+    }    
+})
+client.on('raw', raw => {
+  if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(raw.t)) return;
+  var channel = client.channels.get(raw.d.channel_id);
+  if (channel.messages.has(raw.d.message_id)) return;
+  channel.fetchMessage(raw.d.message_id).then(message => {
+    var reaction = message.reactions.get( (raw.d.emoji.id ? `${raw.d.emoji.name}:${raw.d.emoji.id}` : raw.d.emoji.name) );
+    if (raw.t === 'MESSAGE_REACTION_ADD') return client.emit('messageReactionAdd', reaction, client.users.get(raw.d.user_id));
+    if (raw.t === 'MESSAGE_REACTION_REMOVE') return client.emit('messageReactionRemove', reaction, client.users.get(raw.d.user_id));
+  });
+});
+client.on('messageReactionAdd', (reaction, user) => {
+    if(user.id == client.user.id) return;
+    if(!stopReacord) {
+      var done = false;
+      reactionRoles[reaction.message.id] = { role: definedReactionRole, message_id: reaction.message.id, emoji: reaction.emoji};
+      stopReacord =  true;
+      definedReactionRole = null;
+      reaction.message.react(reaction.emoji.name)
+      .catch(err => {done = true; reaction.message.channel.send(`sorry i can't use this emoji but the reaction role done! anyone react will get the role!`)})
+      if(done) reaction.remove(user);
+    } else {
+      var request = reactionRoles[reaction.message.id];
+      if(!request) return;
+      if(request.emoji.name != reaction.emoji.name) return reaction.remove(user);
+      reaction.message.guild.members.get(user.id).addRole(request.role);
     }
 })
+ 
+client.on('messageReactionRemove', (reaction, user) => {
+  if(user.id == client.user.id) return;
+  if(!stopReacord) return;
+  let request = reactionRoles[reaction.message.id];
+  if(!request) return;
+  reaction.message.guild.members.get(user.id).removeRole(request.role);
+});
 
 
 
