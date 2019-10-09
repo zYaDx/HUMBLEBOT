@@ -397,14 +397,18 @@ client.on('messageReactionRemove', (reaction, user) => {
 
 
 
-const cmd = require("node-cmd")
-client.on("message", async message => {
-  if(message.author.id !== "283880597095710721") return;
-  if(message.content === prefix + "restart") {
-    await cmd.run("refresh")
-    await message.channel.send("Done,")
-  }
-})
+client.on('message', message =>{
+  let command = message.content.split(" ")[0];
+  if (command == prefix + "unban") {
+  if(!message.member.hasPermission('BAN_MEMBERS')) return;
+  let args = message.content.split(" ").slice(1).join(" ");
+  if(args == 'all') {message.guild.fetchBans().then(zg => {
+  zg.forEach(NoNo => {message.guild.unban(NoNo);})});
+  return message.channel.send('**✅ Unbanned all members **')}
+  if(!args) return message.channel.send('**Please Type the member ID / all**');
+  message.guild.unban(args).then(m =>{message.channel.send(`**✅ Unbanned ${m.username}**`);
+  }).catch(stry =>{message.channel.send(`**🙄 - I can't find \`${args}\` in the ban list**`)});
+  }});
 
 
 client.login(process.env.BOT_TOKEN);// لا تغير فيها شيء
