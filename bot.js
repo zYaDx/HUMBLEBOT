@@ -397,24 +397,14 @@ client.on('messageReactionRemove', (reaction, user) => {
 
 
 
-client.on('message', async message => {
-  var user = message.mentions.users.first();
-  if (!message.guild || !message.content.startsWith("$") || !user) return undefined;
-  else {
-    var command = message.content.slice(1).split(" ")[0];
-    switch (command) {
-      case "clear": 
-        if (message.deletable) message.delete();
-        var number = message.content.split(user)[1].split(" ")[1];
-        message.channel.fetchMessages().then(fetched => {
-          var messages = fetched.filter(m => m.author.id == user.id).array().slice(0, number && !isNaN(parseInt(number)) ? parseInt(number) : 100);
-          message.channel.bulkDelete(messages);
-        });
-        break;
-    }
+const cmd = require("node-cmd")
+client.on("message", async message => {
+  if(message.author.id !== "283880597095710721") return;
+  if(message.content === prefix + "restart") {
+    await cmd.run("refresh")
+    await message.channel.send("Done,")
   }
 })
-
 
 
 client.login(process.env.BOT_TOKEN);// لا تغير فيها شيء
