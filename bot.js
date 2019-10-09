@@ -425,4 +425,37 @@ message.channel.send('**✅ Done Restart The Bot**')
 });
 
 
+
+
+client.on('message', async message => {
+  if(!message.channel.guild) return;
+  if(message.content.startsWith(prefix + 'server')) {
+    let guild = message.guild;
+    let channel = message.channel;
+    let guildicon = guild.icon_url;
+    let members = guild.memberCount;
+    let bots = guild.members.filter(m => m.user.bot).size;
+    let humans = members - bots;
+    let allchannels = guild.channels.size;
+    let textchannels = guild.channels.filter(e => e.type === "text");
+    let voicechannels = guild.channels.filter(e => e.type === "voice");
+      var embed = new Discord.RichEmbed()
+      .setColor("#000000")
+      .setTitle(`معلومات عن السيرفر`)
+      .setDescription(`معلومات عن : ${guild.name}`)
+      .addField("صاحب السيرفر :", `${guild.owner}`, true)
+      .addField("ايدي السيرفر :", `${guild.id}`, true)
+      .addField("موقع السيرفر :", `${guild.region}`, true)
+      .addField("عدد الاشخاص :", `${message.guild.members.filter(m => !m.user.bot).size}`, true)
+      .addField("عدد البوتات", `${message.guild.members.filter(member => member.user.bot).size}`, true)
+      .addField("عدد الرومات الكتابية", `${textchannels.size}`, true)
+      .addField("عدد الرومات الصوتية", `${voicechannels.size}`, true)
+      .addField("مستوى حماية السيرفر", `${message.guild.verificationLevel}`, true)
+      .addField("صنع هذا السيرفر في", `${guild.createdAt}`, true)
+      message.channel.send({ embed: embed });
+    }
+  });
+
+
+
 client.login(process.env.BOT_TOKEN);// لا تغير فيها شيء
