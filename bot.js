@@ -1,22 +1,8 @@
 const Discord = require('discord.js');
 const Util = require('discord.js');
 const Canvas = require("canvas")
-const YouTube = require('simple-youtube-api');
-const ytdl = require('ytdl-core');
-const convert = require("hh-mm-ss");
-const dateFormat = require('dateformat');
-const figlet = require('figlet');
-const request = require('request');
-const gif = require("gif-search");
-const zalgo = require("zalgolize");
-const moment = require('moment');
-const r1 = require('snekfetch'); const getYoutubeID = require('get-youtube-id');
-const fetchVideoInfo = require('youtube-info');
-const yt_api_key = "AIzaSyDeoIH0u1e72AtfpwSKKOSy3IPp2UHzqi4"; 
 
-const GOOGLE_API_KEY = 'AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8';
-const youtube = new YouTube(GOOGLE_API_KEY);
-const PREFIX = '-!';
+const PREFIX = '!g';
 
 const queue = new Map();
 const client = new Discord.Client({disableEveryone: true}); 
