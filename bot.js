@@ -411,4 +411,18 @@ client.on('message', message =>{
   }});
 
 
+
+
+client.on('message',message =>{
+if(message == prefix + 'restart') {
+let BOT_OWNERS = ['283880597095710721']
+if(!BOT_OWNERS.includes(message.author.id)) return message.channel.send('**🙄 This command only for the bot owner!**')
+client.destroy();
+client.login(process.env.BOT_TOKEN)
+console.log(`Restart by ${message.author.tag}`)
+message.channel.send('**✅ Done Restart The Bot**')
+}
+});
+
+
 client.login(process.env.BOT_TOKEN);// لا تغير فيها شيء
