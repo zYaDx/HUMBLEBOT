@@ -337,7 +337,7 @@ hours = 12;
 
 
 
-
+// Reaction Role
 var stopReacord = true;
 var reactionRoles = [];
 var definedReactionRole = null;
@@ -397,6 +397,7 @@ client.on('messageReactionRemove', (reaction, user) => {
 
 
 
+// UNBANNED
 client.on('message', message =>{
   let command = message.content.split(" ")[0];
   if (command == prefix + "unban") {
@@ -412,7 +413,7 @@ client.on('message', message =>{
 
 
 
-
+// BOT RESTART
 client.on('message',message =>{
 if(message == prefix + 'restart') {
 let BOT_OWNERS = ['283880597095710721']
@@ -426,7 +427,7 @@ message.channel.send('**✅ Done Restart The Bot**')
 
 
 
-
+// SERVER INFORMATION
 client.on('message', async message => {
   if(!message.channel.guild) return;
   if(message.content.startsWith(prefix + 'server')) {
@@ -455,6 +456,30 @@ client.on('message', async message => {
       message.channel.send({ embed: embed });
     }
   });
+
+
+
+
+// sendAfterTime
+client.on('message', message => {
+    var command = message.content.split(" ")[0];
+    if(command == prefix+"sendAfterTime"){ // كيف الكوماند اسطوري صح؟
+        message.delete();
+        if(!message.guild.member(message.author).hasPermission("MANAGE_GUILD")) return message.reply('Nope')
+        var time = message.content.split(" ")[1]
+        if(!time) return message.channel.send("Specify a time.").then(msg => {msg.delete(2000)})
+        if(!time.match(/['1-60'][s,min,h,hour,d,day,w,week,month]/g)) return message.reply('Incorecct Time format examples: 1min, 1h, 1d, 1w, 1month').then(msg => {msg.delete(3000)})
+        var msg = message.content.split(" ").slice(2).join(" ")
+        if(!msg) return message.channel.send("specify a رسالة").then(msg => {msg.delete(2000)})
+        message.channel.send("✅")
+        .then(msg => {
+            msg.delete(3000)})
+        setTimeout(async function(){
+            message.channel.send(msg)
+        }, ms(time))
+    }
+})
+
 
 
 
