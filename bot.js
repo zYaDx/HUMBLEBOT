@@ -483,4 +483,24 @@ client.on('message', message => {
 
 
 
+
+// SEND MESSAGE FROM THE BOT
+client.on('message', message => {
+    let yourid = "283880597095710721"; //ايدي حقك
+    let channelid = "631301677177372702"; //ايدي الروم
+    if(message.channel.id == channelid){
+        if(message.author.id == yourid){
+            message.delete();
+            message.channel.send(message.content)
+        }else{
+            return undefined;
+        }
+    }else{
+        return undefined;
+    }
+})
+
+
+
+
 client.login(process.env.BOT_TOKEN);// لا تغير فيها شيء
