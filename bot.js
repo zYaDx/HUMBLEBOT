@@ -573,7 +573,7 @@ client.on('message', async message => {
             const complete = new Discord.RichEmbed()
                 .setColor('RANDOM')
                 .setAuthor(`Hey, ${supportUser.tag}`, supportUser.avatarURL)
-                .setFooter('Ticket Closed -- Toxic Codes')
+                .setFooter('Ticket Closed - DpMc')
                 .setDescription('*Your ticket has been marked as complete. If you wish to reopen it, or create a new one, please send a message to the bot.*')
             supportUser.send(complete);
             message.channel.delete();
