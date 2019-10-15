@@ -484,6 +484,28 @@ client.on('message', message => {
 
 
 
+// Promote or Demote
+client.on('message',message =>{
+  let command = message.content.split(" ")[0];
+  let lev1 = message.guild.roles.find("name", "Support Team");
+  let lev2 = message.guild.roles.find("name", "Mod");
+  let lev3 = message.guild.roles.find('name','General');
+if (command == prefix + "promotion") {
+  let user = message.mentions.members.first() || message.guild.members.get(message.content.split(" ")[1]);if(!user) return;if(user.highestRole == lev3) return;
+  if(user.highestRole == lev1) {user.removeRole(lev1).catch(({}));user.addRole(lev2).catch(({}));message.channel.send(new Discord.RichEmbed().setDescription(`**Successfully promoted ${user} to a server Modrator 🤗**`)
+  .setColor('#0fffff'))}
+ if(user.highestRole == lev2) {user.removeRole(lev2).catch(({}));user.addRole(lev3).catch(({}));
+  message.channel.send(new Discord.RichEmbed().setDescription(`**Successfully promoted ${user} to a server General 🤗**`).setColor('#0fffff'))}}
+if (command == prefix + "demotion") {
+  let user = message.mentions.members.first() || message.guild.members.get(message.content.split(" ")[1])
+  if(!user) return
+  if(user.highestRole == lev2) {user.removeRole(lev2).catch(({}));user.addRole(lev1).catch(({}));
+    message.channel.send(new Discord.RichEmbed().setDescription(`**Successfully demoted ${user} to a server Support ☹**`).setColor('RED'))}
+    if(user.highestRole == lev3) {user.removeRole(lev3).catch(({}));user.addRole(lev2).catch(({}));
+    message.channel.send(new Discord.RichEmbed().setDescription(`**Successfully demoted ${user} to a server Modrator ☹**`).setColor('RED'))}
+    if(user.highestRole == lev1) {user.removeRole(lev1).catch(({}));
+    message.channel.send(new Discord.RichEmbed().setDescription(`**Successfully demoted ${user} ☹**`).setColor('RED'))}}})
+
 
 
 
