@@ -2,11 +2,8 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const db = require("quick.db");
 var prefix = "#";
-const serverStats = {
-    guildID: '631292001089749013',
-    ticketCategoryID: '633727741388259332'
- 
-}
+
+
 
 
 
@@ -501,7 +498,11 @@ client.on('message', message => {
 
 
 
-
+const serverStats = {
+    guildID: '631292001089749013',
+    ticketCategoryID: '633727741388259332'
+ 
+}
 //It's not a command, just send a DM for bot and... 
  
 client.on('message', async message => {
@@ -522,7 +523,7 @@ client.on('message', async message => {
             channel.setParent(serverStats.ticketCategoryID)
             channel.setTopic(`/complete to close the ticket | Support for ${message.author.tag} | ID: ${message.author.id}`)
  
-            channel.overwritePermissions("465147579517370368", { //Role id (when someone join my server get this role with id <<, i dont know how to change it for @everyone. This will prevent users to see the channel, only admins will see!
+            channel.overwritePermissions("633732071340113950", { //Role id (when someone join my server get this role with id <<, i dont know how to change it for @everyone. This will prevent users to see the channel, only admins will see!
                 VIEW_CHANNEL: false,
                 SEND_MESSAGES: false,
                 ADD_REACTIONS: false
@@ -533,8 +534,8 @@ client.on('message', async message => {
             let author = message.author;
             const newChannel = new Discord.RichEmbed()//Toxic Codes
                 .setColor('RANDOM')
-                .setAuthor(author.tag, author.avatarURL)
-                .setFooter('Support Ticket Created!')
+                .sevatarURL)
+                .setFooter('SutAuthor(author.tag, author.apport Ticket Created!')
                 .addField('User', author)
                 .addField('ID', author.id)
             await channel.send(newChannel);
