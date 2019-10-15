@@ -1,12 +1,6 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const db = require("quick.db");
 var prefix = "#";
-
-
-
-
-
 
 
 client.on('message', message => {
