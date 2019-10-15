@@ -515,7 +515,7 @@ let temp = JSON.parse(fs.readFileSync('./temp.json' , 'utf8'));
 client.on('message', async message => {
  if(message.channel.type === "dm") return;
   if(message.author.bot) return;
- if(message.content == (prefix+'temp on')) {
+ if(message.content == prefix+'temp on') {
 if(!message.member.hasPermission(`MANAGE_GUILD`)) return;
 if(temp[message.guild.id]) return message.channel.send('**The TempVoice Room Is Allready setup ✅**')
  message.guild.createChannel('Temporary Channels', 'category').then(cg => {
