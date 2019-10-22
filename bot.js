@@ -685,7 +685,7 @@ client.on('message',message =>{
     let embed = new Discord.RichEmbed().setColor('#36393e')
     .setThumbnail(message.author.avatarURL)
     .setDescription('» [ \`✅\` ] **::** \`- تم قبول العضو بنجاح ! واعطائه رتبة السبورت\`')
-    let results = message.guild.channels.find("name", "results");
+    let results = message.guild.channels.find("name", "الرفض-القبول");
     if(results) results.send(embed)}if(command == prefix + 'رفض') {
       let member = message.mentions.members.first();if(!member) return;
       let embed = new Discord.RichEmbed().setColor('#36393e')
