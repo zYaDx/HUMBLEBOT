@@ -697,7 +697,57 @@ client.on('message',message =>{
   });
 
 
-
+// SERVER STATS
+let count = JSON.parse(fs.readFileSync('./count.json' , 'utf8'));
+client.on('message',message=>{
+if(message==prefix+'setup'){
+if(!message.member.hasPermission('MANAGE_GUILD'))return
+message.channel.send('processins... 🔄').then(msg=>{
+message.guild.createChannel('📊 Server Stats 📊','category').then(category=>{
+message.guild.createChannel(`Role Count: ${message.guild.roles.size}`,'voice').then(roles=>{
+message.guild.createChannel(`Bot Count: ${message.guild.members.filter(m=>m.user.bot).size}`,'voice').then(bots=>{
+message.guild.createChannel(`User Count: ${message.guild.memberCount - message.guild.members.filter(m=>m.user.bot).size}`,'voice').then(users=>{
+message.guild.createChannel(`Channel Count: ${message.guild.channels.size}`,'voice').then(channels=>{
+message.guild.createChannel(`Member Count: ${message.guild.members.size}`,'voice').then(members=>{
+roles.setParent(category);bots.setParent(category);users.setParent(category);channels.setParent(category);members.setParent(category);
+count[message.guild.id]= {category:category.id,roles:roles.id,bots:bots.id,users:users.id,channels:channels.id,members:members.id
+};fs.writeFile("./count.json", JSON.stringify(count),(err)=>{if(err)console.error(err)})
+msg.edit('**The Rooms Has Been SetUp ✅**')})})})})})})})
+}if(message==prefix+'turn off'){
+  if(!message.member.hasPermission('MANAGE_GUILD'))return
+if(!count[message.guild.id])return message.channel.send('**The Command is Allready Turn off**\ntype `'+prefix+'setup` to turn it on')
+let g = count[message.guild.id]
+message.channel.send('processins... 🔄').then(msg=>{
+if(g.role) {let ch = message.guild.channels.get(g.role);if(ch) ch.delete().catch(err=>{return})}
+if(g.bots) {let ch = message.guild.channels.get(g.bots);if(ch) ch.delete().catch(err=>{return})}
+if(g.users) {let ch = message.guild.channels.get(g.users);if(ch) ch.delete().catch(err=>{return})}
+if(g.channels) {let ch = message.guild.channels.get(g.channels);if(ch) ch.delete().catch(err=>{return})} 
+if(g.members) {let ch = message.guild.channels.get(g.members);if(ch) ch.delete().catch(err=>{return})} 
+if(g.category) {let ch = message.guild.channels.get(g.category);if(ch) ch.delete().catch(err=>{return})}
+delete count[message.guild.id] ;msg.edit('**The Rooms Has Been Removed ✅**')})}})
+client.on('roleCreate',role=>{
+if(!count[role.guild.id])return
+let ch = role.guild.channels.get(count[role.guild.id].role);if(ch) ch.setName(`Role Count: ${role.guild.roles.size}`).catch(err=>{return})})
+client.on('roleDelete',role=>{
+if(!count[role.guild.id])return
+let ch = role.guild.channels.get(count[role.guild.id].role);if(ch) ch.setName(`Role Count: ${role.guild.roles.size}`).catch(err=>{return})})
+////////////////////
+client.on('channelCreate',channel=>{
+  if(!count[channel.guild.id])return
+  let ch = channel.guild.channels.get(count[channel.guild.id].channels);if(ch) ch.setName(`Channel Count:${channel.guild.channels.size}`).catch(err=>{return})})
+  client.on('channelDelete',channel=>{
+    if(!count[channel.guild.id])return
+    let ch = channel.guild.channels.get(count[channel.guild.id].channels);if(ch) ch.setName(`Channel Count: ${channel.guild.channels.size}`).catch(err=>{return})})
+///////////////
+client.on('guildMemberAdd',member =>{
+  if(!count[member.guild.id])return;
+  let ch = member.guild.channels.get(count[member.guild.id].members);if(ch)ch.setName(`Members Count: ${member.guild.members.size}`).catch(err=>{return});
+  if(member.bot){
+    let ch = member.guild.channels.get(count[member.guild.id].bots);if(ch)ch.setName(`Bot Count:${member.guild.members.filter(m=>m.user.bot).size}`).catch(err=>{return});
+  }if(!member.bot){
+    let ch = member.guild.channels.get(count[member.guild.id].users);if(ch)ch.setName(`User Count: ${member.guild.memberCount - member.guild.members.filter(m=>m.user.bot).size}`).catch(err=>{return});
+  }
+})
 
 
 
