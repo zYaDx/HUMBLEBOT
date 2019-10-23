@@ -217,8 +217,8 @@ client.on('ready', () => {
       console.log(`ON ${client.guilds.size} Servers '     Script By : ZyTon#5555 ' `);
     console.log(`----------------`);
   console.log(`Logged in as ${client.user.tag}!`);
-client.user.setGame(``,"")
-client.user.setStatus("online")
+client.user.setGame(``,"Evloved Server")
+client.user.setStatus("streaming")
 });
 
 
